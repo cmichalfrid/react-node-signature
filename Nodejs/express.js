@@ -15,15 +15,8 @@ console.log('Finished setting up /api/document route');app.use((err, req, res, n
     console.log(err);
     res.status(500).send('An error occurred, please try later...');
 })
-// להגדרת תיקיית build כסטטית
 app.use(express.static(path.join(__dirname, 'build')));
 
-// מסלול API לדוגמה
-app.get('/api/hello', (req, res) => {
-  res.json({ message: "Hello from backend!" });
-});
-
-// כל שאר הבקשות יחזירו את index.html (כדי ש־React Router יעבוד)
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
