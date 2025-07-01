@@ -22,7 +22,8 @@ router.get('/:id', async (req, res) => {
       return res.status(404).send('Document not found');
     }
 
-    const fileUrl = `${process.env.HOST || 'http://127.0.0.1'}:${process.env.PORT || 3000}/uploads/pdf/${encodeURIComponent(document.fileName)}`;
+const baseUrl = process.env.BASE_URL || `http://localhost:${process.env.PORT || 3000}`;
+const fileUrl = `${baseUrl}/uploads/pdf/${encodeURIComponent(document.fileName)}`;
 
     res.json({
       id: document.id,
