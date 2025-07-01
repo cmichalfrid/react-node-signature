@@ -43,8 +43,10 @@ class DocumentService extends Service {
             fs.writeFileSync(pdfFilePath, pdfBuffer);
 
             const savedDoc = await this.repo.insert({ name, email, fileName: pdfFileName });
+            console.log('inserted document id:', savedDoc);
 
             res.status(201).json({
+
                 message: 'המסמך הומר ונשמר בהצלחה',
                 id: savedDoc,
             });
@@ -53,7 +55,7 @@ class DocumentService extends Service {
             console.error(error);
             res.status(500).send("שגיאה במהלך העלאת המסמך");
         }
-        
+
     }
 
     async getDocumentForId(req, res, next) {
