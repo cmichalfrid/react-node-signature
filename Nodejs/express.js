@@ -6,6 +6,10 @@ const port = process.env.PORT || 3000;
 const documentsRouter = require('./routers/document.router.js');
 const cors = require('cors');
 app.use(cors());
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url}`);
+  next();
+});
 const path = require('path');
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(express.json());
