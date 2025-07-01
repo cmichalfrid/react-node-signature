@@ -1,16 +1,20 @@
 import axios from "axios";
 import { DocumentModel } from '../models/DocumentModel';
 
-export function insertDocument(document:any){
-    return  axios.post(`http://127.0.0.1:3001/api/document`,document)
+const API_URL = process.env.REACT_APP_API_URL;
+
+export function insertDocument(document:any) {
+  return axios.post(`${API_URL}`, document);
 }
 
-export function getDocumentId(id:number){
-    return  axios.get(`http://127.0.0.1:3001/api/document${id}`)
+export function getDocumentId(id:any) {
+  return axios.get(`${API_URL}/${id}`);
 }
-export function sendSignature(data:any){
-    return  axios.post(`http://127.0.0.1:3001/api/document/signature`,data)
+
+export function sendSignature(data:any) {
+  return axios.post(`${API_URL}/signature`, data);
 }
-     export function getDocumentForId(id:number){
-    return  axios.get(`http://127.0.0.1:3001/api/document/signature/${id}`)
+
+export function getDocumentForId(id:any) {
+  return axios.get(`${API_URL}/signature/${id}`);
 }

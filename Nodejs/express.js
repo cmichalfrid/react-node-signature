@@ -16,6 +16,6 @@ app.use((err, req, res, next) => {
     res.status(500).send('An error occurred, please try later...');
 })
 
-app.listen(port, () => {
-    console.log(`express server is running at http://${host}:${port}`);
+app.listen(port, '0.0.0.0', () => {
+    console.log(`Server listening on port ${port}`);
 });
