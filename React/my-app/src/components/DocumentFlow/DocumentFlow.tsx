@@ -33,6 +33,7 @@ function DocumentFlow() {
 
         insertDocument(formData)
             .then(data => {
+                console.log(data);            
                 dispatch(setUrlPdf(data.data.link))
                 dispatch(setId(data.data.id))
                 console.log(data.data.id);
