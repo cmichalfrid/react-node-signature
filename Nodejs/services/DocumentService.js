@@ -16,10 +16,6 @@ class DocumentService extends Service {
     }
 
     async insert(req, res, next) {
-         console.log('=== NEW INSERT CALL ===');
-    console.log('Headers:', req.headers['content-type']);
-    console.log('Body fields:', req.body);
-    console.log('File object:', req.file);
         try {
             const file = req.file;
             const { name, email } = req.body;
@@ -57,8 +53,7 @@ class DocumentService extends Service {
             console.error(error);
             res.status(500).send("שגיאה במהלך העלאת המסמך");
         }
-        console.log('File info:', file);
-        console.log('Reading file from:', file.path);
+        
     }
 
     async getDocumentForId(req, res, next) {
