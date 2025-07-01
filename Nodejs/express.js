@@ -16,5 +16,5 @@ app.use((err, req, res, next) => {
 })
 
 app.listen(port, () => {
-    console.log(`express server is running at http://:${port}`);
-})
+    console.log(`express server is running at http://localhost:${port}`);
+});
