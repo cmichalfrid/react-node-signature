@@ -16,7 +16,6 @@ function DocumentFlow() {
     const [loading, setLoading] = useState(false);
     const myStore = useSelector((allStore) => allStore)
     const dispatch = useDispatch();
-    const navigate = useNavigate()
 
     const handleChange = (event: any) => {
         setFileName(event.target.files[0])
@@ -36,6 +35,8 @@ function DocumentFlow() {
             .then(data => {
                 dispatch(setUrlPdf(data.data.link))
                 dispatch(setId(data.data.id))
+                console.log(data.data.id);
+                
                 setlinkToShare(`${window.location.origin}/signature/${data.data.id}`)
             })
             .finally(() => setLoading(false));
