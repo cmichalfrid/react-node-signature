@@ -27,7 +27,7 @@ function DocumentFlow() {
         }
         setLoading(true);
         const formData = new FormData();
-        formData.append('fileName', fileName);
+        formData.append('file', fileName);
         formData.append('name', value.name);
         formData.append('email', value.email);
 
