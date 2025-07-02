@@ -3,18 +3,17 @@ import { DocumentModel } from '../models/DocumentModel';
 const API_URL = process.env.REACT_APP_API_URL;
 
 export function insertDocument(document:any) {
-console.log("API_URL:", process.env.REACT_APP_API_URL);
-  return axios.post(`${API_URL}`, document);
+  return axios.post(`/api/document`, document);
 }
 
 export function getDocumentId(id:any) {
-  return axios.get(`${API_URL}/${id}`);
+  return axios.get(`/api/document/${id}`);
 }
 
 export function sendSignature(data:any) {
-  return axios.post(`${API_URL}/signature`, data);
+  return axios.post(`/api/document/signature`, data);
 }
 
 export function getDocumentForId(id:any) {
-  return axios.get(`${API_URL}/signature/${id}`);
+  return axios.get(`/api/document/signature/${id}`);
 }
