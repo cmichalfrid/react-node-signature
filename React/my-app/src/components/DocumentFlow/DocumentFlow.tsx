@@ -26,12 +26,17 @@ function DocumentFlow() {
             return;
         }
         setLoading(true);
-        const formData = new FormData();
-        formData.append('fileName', fileName);
-        formData.append('name', value.name);
-        formData.append('email', value.email);
+        // const formData = new FormData();
+        // formData.append('fileName', fileName);
+        // formData.append('name', value.name);
+        // formData.append('email', value.email);
 
-        insertDocument(formData)
+        const data = {
+            fileName: fileName,
+            name: value.name,
+            email:value.email
+        };
+        insertDocument(data)
             .then(data => {
                 console.log(data);            
                 dispatch(setUrlPdf(data.data.link))
