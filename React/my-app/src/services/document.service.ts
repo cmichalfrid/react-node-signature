@@ -4,6 +4,8 @@ const API_URL = process.env.REACT_APP_API_URL;
 
 export function insertDocument(document: any) {
   
+  console.log(document);
+  
   return axios.post(`https://react-node-signature-1.onrender.com/api/document`, document, )
 }
 
