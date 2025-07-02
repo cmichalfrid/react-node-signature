@@ -24,11 +24,6 @@ app.use(express.static(path.join(__dirname, 'build')));
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
-app.post('/api/document', (req, res) => {
-  console.log("Received document:", req.body); // בדוק מה מגיע לשרת
-  // כאן שמירה בבסיס נתונים או פעולה אחרת
-  res.status(200).json({ message: "Document saved" });
-});
 
 app.listen(port, '0.0.0.0', () => {
     console.log(`Server listening on port ${port}`);
