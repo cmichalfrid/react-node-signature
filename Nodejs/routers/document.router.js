@@ -8,6 +8,7 @@ const DocumentService = require('../services/DocumentService.js');
 const upload = multer({ dest: 'uploads/' });
 
 router.post('/', upload.single('fileName'), DocumentService.insert);
+
 router.post('/signature', DocumentService.sendFileSignature);
 
 router.get('/', DocumentService.getAll);
