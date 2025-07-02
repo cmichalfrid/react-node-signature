@@ -3,7 +3,7 @@ import { DocumentModel } from '../models/DocumentModel';
 const API_URL = process.env.REACT_APP_API_URL;
 
 export function insertDocument(document:any) {
-    console.log("Sending POST to URL:", API_URL);
+console.log("API_URL:", process.env.REACT_APP_API_URL);
   return axios.post(`${API_URL}`, document);
 }
 
