@@ -3,13 +3,8 @@ import { DocumentModel } from '../models/DocumentModel';
 const API_URL = process.env.REACT_APP_API_URL;
 
 export function insertDocument(document: any) {
-  console.log(`https://react-node-signature-1.onrender.com/api/document`+document);
   
-  return axios.post(`https://react-node-signature-1.onrender.com/api/document`, document, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
+  return axios.post(`https://react-node-signature-1.onrender.com/api/document`, document, )
 }
 
 export function getDocumentId(id:any) {
