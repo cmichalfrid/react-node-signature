@@ -16,6 +16,9 @@ class DocumentService extends Service {
     }
 
     async insert(req, res, next) {
+        console.log("📥 קובץ:", req.file);
+        console.log("📥 שם:", req.body.name);
+        console.log("📥 מייל:", req.body.email);
         try {
             const file = req.file;
             const { name, email } = req.body;
