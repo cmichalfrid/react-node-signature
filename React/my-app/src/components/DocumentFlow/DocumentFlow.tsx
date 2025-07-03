@@ -39,7 +39,9 @@ function DocumentFlow() {
         formData.append('name', value.name);
         formData.append('email', value.email);
 console.log("נשלח ל־insertDocument:", formData);
-
+for (let pair of formData.entries()) {
+  console.log(pair[0]+ ':', pair[1]);
+}
         insertDocument(formData)
             .then(data => {
                 console.log(data);            
