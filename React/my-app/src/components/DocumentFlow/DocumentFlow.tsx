@@ -23,7 +23,7 @@ function DocumentFlow() {
         setFileName(event.target.files[0])
     }
     const sendToServer = (value: DocumentModel) => {
-        console.log("xfcgvhbjnklm");
+  console.log("📨 sendToServer called with:", value);
         
         if (!fileName) {
             alert('אנא בחר קובץ לפני השליחה');
