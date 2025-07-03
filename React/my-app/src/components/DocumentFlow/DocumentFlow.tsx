@@ -11,6 +11,8 @@ import { useNavigate } from 'react-router-dom';
 
 
 function DocumentFlow() {
+        console.log("Rendering DocumentFlow component");
+
     const [fileName, setFileName] = useState<File | undefined>(undefined);
     const [linkToShare, setlinkToShare] = useState<string>();
     const [loading, setLoading] = useState(false);
