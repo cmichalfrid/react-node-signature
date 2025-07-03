@@ -20,6 +20,8 @@ function DocumentFlow() {
     const dispatch = useDispatch();
 
     const handleChange = (event: any) => {
+            console.log('File selected:', event.target.files[0]);
+
         setFileName(event.target.files[0])
     }
     const sendToServer = (value: DocumentModel) => {
