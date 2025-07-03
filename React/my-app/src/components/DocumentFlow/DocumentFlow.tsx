@@ -30,7 +30,7 @@ function DocumentFlow() {
         formData.append('file', fileName);
         formData.append('name', value.name);
         formData.append('email', value.email);
-console.log("נשלח ל־insertDocument:", document);
+console.log("נשלח ל־insertDocument:", formData);
 
         insertDocument(formData)
             .then(data => {
