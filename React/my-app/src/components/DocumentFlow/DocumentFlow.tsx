@@ -105,6 +105,9 @@ console.log("נשלח ל־insertDocument:", formData);
                 </p>
             )}
         </form>
+        <button type="button" onClick={() => sendToServer(myForm.values)}>
+  🔍 בדוק אם sendToServer עובד
+</button>
     </div>
 }
 
