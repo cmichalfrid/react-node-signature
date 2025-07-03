@@ -21,6 +21,8 @@ function DocumentFlow() {
         setFileName(event.target.files[0])
     }
     const sendToServer = (value: DocumentModel) => {
+        console.log("xfcgvhbjnklm");
+        
         if (!fileName) {
             alert('אנא בחר קובץ לפני השליחה');
             return;
@@ -53,14 +55,8 @@ console.log("נשלח ל־insertDocument:", formData);
         })
     })
     return <div className="DocumentFlow">
-<form
-  onSubmit={e => {
-    e.preventDefault();
-    console.log('form submitted!');
-    myForm.handleSubmit(e);
-  }}
-  className="upload-form"
->            <div className="input-group">
+        <form onSubmit={myForm.handleSubmit} className="upload-form">
+            <div className="input-group">
                 <label htmlFor="name">שם מלא</label>
                 <input
                     id="name"
