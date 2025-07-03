@@ -53,8 +53,14 @@ console.log("נשלח ל־insertDocument:", formData);
         })
     })
     return <div className="DocumentFlow">
-        <form onSubmit={myForm.handleSubmit} className="upload-form">
-            <div className="input-group">
+<form
+  onSubmit={e => {
+    e.preventDefault();
+    console.log('form submitted!');
+    myForm.handleSubmit(e);
+  }}
+  className="upload-form"
+>            <div className="input-group">
                 <label htmlFor="name">שם מלא</label>
                 <input
                     id="name"
