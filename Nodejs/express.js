@@ -27,12 +27,11 @@ app.use((err, req, res, next) => {
   res.status(500).send('An error occurred, please try later...');
 });
 
-app.use(express.static(path.join(__dirname, 'build')));
+app.use(express.static(path.join(__dirname, '../React/my-app/build')));
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  res.sendFile(path.join(__dirname, '../React/my-app/build', 'index.html'));
 });
-
 app.listen(port, '0.0.0.0', () => {
   console.log(`Server listening on port ${port}`);
 });
