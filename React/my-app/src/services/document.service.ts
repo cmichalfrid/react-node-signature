@@ -3,7 +3,7 @@ import { DocumentModel } from '../models/DocumentModel';
 
 export function insertDocument(document: any) {
   
-  console.log(document);
+  console.log("bgyuvhbijnkmknuyvtcrxezwexcrtvyujnmk");
   
   
 return axios.post('https://react-node-signature-1.onrender.com/api/document', document);
