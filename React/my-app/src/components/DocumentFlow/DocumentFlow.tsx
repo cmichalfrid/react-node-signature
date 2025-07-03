@@ -25,6 +25,8 @@ function DocumentFlow() {
         setFileName(event.target.files[0])
     }
     const sendToServer = (value: DocumentModel) => {
+          console.log("📨 sendToServer called with:", value, fileName);
+
   console.log("📨 sendToServer called with:", value);
         
         if (!fileName) {
