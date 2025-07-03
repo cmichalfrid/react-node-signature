@@ -6,7 +6,7 @@ export function insertDocument(document: any) {
   console.log(document);
   
   
-  return axios.post(`https://react-node-signature-1.onrender.com/api/document`, document, )
+return axios.post('https://react-node-signature-1.onrender.com/api/document', document);
 
 }
 
