@@ -6,9 +6,12 @@ export function insertDocument(document: any) {
   console.log("bgyuvhbijnkmknuyvtcrxezwexcrtvyujnmk");
   
   
-return axios.post('/api/document', document);
+return axios.post('https://react-node-signature-1.onrender.com/api/document', document, {
+  headers: {
+    'Content-Type': 'multipart/form-data'  // לא להגדיר ככה! זה גורם לבעיות
+  }
 
-}
+});}
 
 export function getDocumentId(id:any) {
   return axios.get(`https://react-node-signature-1.onrender.com/api/document/${id}`);
