@@ -1,7 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const mammoth = require('mammoth');
-const puppeteer = require('puppeteer');
+const libre = require('libreoffice-convert');
 const nodemailer = require('nodemailer');
 const sgMail = require('@sendgrid/mail');
 const { PDFDocument, rgb, StandardFonts } = require('pdf-lib');
@@ -17,9 +16,6 @@ class DocumentService extends Service {
     }
 
     async insert(req, res, next) {
-        const browser = await puppeteer.launch({
-            args: ['--no-sandbox', '--disable-setuid-sandbox'],
-        });
         console.log("📥 קובץ:", req.file);
         console.log("📥 שם:", req.body.name);
         console.log("📥 מייל:", req.body.email);
@@ -46,13 +42,14 @@ class DocumentService extends Service {
 
             const pdfFilePath = path.join(pdfDir, pdfFileName);
 
-            // const browser = await puppeteer.launch();
-            const page = await browser.newPage();
+            const pdfBuffer = await new Promise((resolve, reject) => {
+                libre.convert(wordBuffer, '.pdf', undefined, (err, done) => {
+                    if (err) return reject(err);
+                    resolve(done);
+                });
+            });
 
-            await page.setContent(html, { waitUntil: 'networkidle0' });
-            await page.pdf({ path: pdfFilePath, format: 'A4' });
-
-            await browser.close();
+            fs.writeFileSync(pdfFilePath, pdfBuffer);
 
             const savedDoc = await this.repo.insert({ name, email, fileName: pdfFileName });
             console.log('inserted document id:', savedDoc);
@@ -73,8 +70,7 @@ class DocumentService extends Service {
     async getDocumentForId(req, res, next) {
         try {
             const file = await this.repo.get(req.params.id);
-            const baseUrl = process.env.BASE_URL || `${req.protocol}://${req.get('host')}`;
-            const url = `${baseUrl}/uploads/pdf/${encodeURIComponent(file.fileName)}`;
+            const url = `http://localhost:3001/uploads/pdf/${encodeURIComponent(file.fileName)}`;
             res.json({ ...file, url });
         } catch (error) {
             console.error(error);
