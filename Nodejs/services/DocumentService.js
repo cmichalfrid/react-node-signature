@@ -70,7 +70,8 @@ class DocumentService extends Service {
     async getDocumentForId(req, res, next) {
         try {
             const file = await this.repo.get(req.params.id);
-            const url = `http://localhost:3001/uploads/pdf/${encodeURIComponent(file.fileName)}`;
+            const baseUrl = process.env.BASE_URL || `${req.protocol}://${req.get('host')}`;
+            const url = `${baseUrl}/uploads/pdf/${encodeURIComponent(file.fileName)}`;
             res.json({ ...file, url });
         } catch (error) {
             console.error(error);
