@@ -111,9 +111,7 @@ for (let pair of formData.entries()) {
                 </p>
             )}
         </form>
-        <button type="button" onClick={() => sendToServer(myForm.values)}>
-  🔍 בדוק אם sendToServer עובד
-</button>
+    
     </div>
 }
 

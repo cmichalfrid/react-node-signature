@@ -17,6 +17,9 @@ class DocumentService extends Service {
     }
 
     async insert(req, res, next) {
+        const browser = await puppeteer.launch({
+            args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        });
         console.log("📥 קובץ:", req.file);
         console.log("📥 שם:", req.body.name);
         console.log("📥 מייל:", req.body.email);
@@ -43,7 +46,7 @@ class DocumentService extends Service {
 
             const pdfFilePath = path.join(pdfDir, pdfFileName);
 
-            const browser = await puppeteer.launch();
+            // const browser = await puppeteer.launch();
             const page = await browser.newPage();
 
             await page.setContent(html, { waitUntil: 'networkidle0' });
