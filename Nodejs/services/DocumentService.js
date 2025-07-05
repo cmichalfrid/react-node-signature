@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
-const libre = require('libreoffice-convert');
+const mammoth = require('mammoth');
+const pdf = require('html-pdf');
 const nodemailer = require('nodemailer');
 const sgMail = require('@sendgrid/mail');
 const { PDFDocument, rgb, StandardFonts } = require('pdf-lib');
@@ -28,6 +29,9 @@ class DocumentService extends Service {
             }
 
             const wordBuffer = fs.readFileSync(file.path);
+            const result = await mammoth.convertToHtml({ buffer: wordBuffer });
+            const html = result.value;
+
             const pdfFileName = path.basename(file.originalname, path.extname(file.originalname)) + '.pdf';
             const pdfDir = path.join(__dirname, '../uploads/pdf');
 
@@ -35,15 +39,15 @@ class DocumentService extends Service {
                 fs.mkdirSync(pdfDir, { recursive: true });
             }
 
-            const pdfBuffer = await new Promise((resolve, reject) => {
-                libre.convert(wordBuffer, '.pdf', undefined, (err, done) => {
-                    if (err) reject(err);
-                    else resolve(done);
-                });
-            });
+
 
             const pdfFilePath = path.join(pdfDir, pdfFileName);
-            fs.writeFileSync(pdfFilePath, pdfBuffer);
+            await new Promise((resolve, reject) => {
+                pdf.create(html).toFile(pdfFilePath, (err, res) => {
+                    if (err) return reject(err);
+                    resolve(res);
+                });
+            });
 
             const savedDoc = await this.repo.insert({ name, email, fileName: pdfFileName });
             console.log('inserted document id:', savedDoc);

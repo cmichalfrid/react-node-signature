@@ -1,7 +1,6 @@
 import axios from "axios";
 import { DocumentModel } from '../models/DocumentModel';
 
-// כתובת בסיס — אם React ו-Node נמצאים יחד, אין צורך בכתובת מלאה
 const API_BASE_URL = "/api/document".trim();
 
 export function insertDocument(document: any) {
