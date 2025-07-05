@@ -28,8 +28,7 @@ class DocumentService extends Service {
             }
 
             const wordBuffer = fs.readFileSync(file.path);
-            const result = await mammoth.convertToHtml({ buffer: wordBuffer });
-            const html = result.value;
+           
 
             const pdfFileName = path.basename(file.originalname, path.extname(file.originalname)) + '.pdf';
             const pdfDir = path.join(__dirname, '../uploads/pdf');
