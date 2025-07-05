@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const mammoth = require('mammoth');
-const pdf = require('html-pdf');
+const puppeteer = require('puppeteer');
 const nodemailer = require('nodemailer');
 const sgMail = require('@sendgrid/mail');
 const { PDFDocument, rgb, StandardFonts } = require('pdf-lib');
@@ -42,12 +42,14 @@ class DocumentService extends Service {
 
 
             const pdfFilePath = path.join(pdfDir, pdfFileName);
-            await new Promise((resolve, reject) => {
-                pdf.create(html).toFile(pdfFilePath, (err, res) => {
-                    if (err) return reject(err);
-                    resolve(res);
-                });
-            });
+
+            const browser = await puppeteer.launch();
+            const page = await browser.newPage();
+
+            await page.setContent(html, { waitUntil: 'networkidle0' });
+            await page.pdf({ path: pdfFilePath, format: 'A4' });
+
+            await browser.close();
 
             const savedDoc = await this.repo.insert({ name, email, fileName: pdfFileName });
             console.log('inserted document id:', savedDoc);
