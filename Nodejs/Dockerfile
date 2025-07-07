@@ -20,7 +20,8 @@ RUN apt-get update && \
 WORKDIR /app
 COPY Nodejs/package*.json ./
 RUN npm install
-COPY Nodejs ./
+COPY Nodejs/. .        # ✅ נקודה אחרי ה־/ — מעתיק את הקבצים עצמם, לא את התיקייה
+
 
 # העתקת תוצאת הבנייה של React
 COPY --from=build-react /react-app/build ./public
