@@ -1,21 +1,29 @@
+# שלב 1: בניית React
+FROM node:18-slim as build-react
+
+WORKDIR /react-app
+COPY React/my-app/package*.json ./
+RUN npm install
+COPY React/my-app ./
+RUN npm run build
+
+
+# שלב 2: אפליקציית Node.js
 FROM node:18-slim
 
-# כדי למנוע שאלות אינטראקטיביות במהלך התקנה
-ENV DEBIAN_FRONTEND=noninteractive
-
-# עדכון ותקינת perl ו libreoffice בלי שאלות, עם ניקוי קאש
+# התקנת LibreOffice
 RUN apt-get update && \
-    apt-get install -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" \
-    perl libreoffice apt-utils && \
+    apt-get install -y libreoffice && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN which soffice
-# המשך תהליך הבנייה שלך, לדוגמה:
+# העתקת קבצי Node.js
 WORKDIR /app
-COPY . .
-
-# התקנת תלותות Node.js (אם יש)
+COPY Nodejs/package*.json ./
 RUN npm install
+COPY Nodejs ./
 
-# פקודת הרצה לדוגמה (תתאים לפי הצורך)
+# העתקת תוצאת הבנייה של React
+COPY --from=build-react /react-app/build ./public
+
+EXPOSE 3000
 CMD ["node", "index.js"]
