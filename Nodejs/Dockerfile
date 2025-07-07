@@ -24,7 +24,7 @@ COPY Nodejs/package*.json ./
 RUN npm install
 
 # העתקת קוד Node.js עצמו
-COPY Nodejs/. .    # בלי NODEJS בסוף כי את כבר בנתיב הנכון
+COPY . .
 
 # העתקת תוצאת הבנייה של React
 COPY --from=build-react /react-app/build ./public
