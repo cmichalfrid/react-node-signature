@@ -16,15 +16,21 @@ RUN apt-get update && \
     apt-get install -y libreoffice && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# העתקת קבצי Node.js
+# הגדרת תיקיית העבודה
 WORKDIR /app
+
+# העתקת קבצי התלויות והתקנתן
 COPY Nodejs/package*.json ./
 RUN npm install
-COPY Nodejs/. .        # ✅ נקודה אחרי ה־/ — מעתיק את הקבצים עצמם, לא את התיקייה
 
+# העתקת קוד Node.js עצמו
+COPY Nodejs/. .    # בלי NODEJS בסוף כי את כבר בנתיב הנכון
 
 # העתקת תוצאת הבנייה של React
 COPY --from=build-react /react-app/build ./public
 
+# פתיחת פורט
 EXPOSE 3000
-CMD ["node", "index.js"]
+
+# הרצת השרת
+CMD ["node", "express.js"]
