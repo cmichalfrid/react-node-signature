@@ -6,7 +6,7 @@ const fs = require('fs');
 class Repository {
     constructor(model) {
         this.model = model;
-        this.filePath = './data/documents.json';
+        this.filePath = path.join(__dirname, '../data/documents.json');
         autoBind(this);
     }
 
@@ -36,26 +36,24 @@ class Repository {
         }
     }
 
-    async insert(data) {
-        try {
-            const item = await this.model.create(data);
-            if (item) {
-                return item;
-            }
-            throw new Error('Something wrong happened');
-        } catch (error) {
-            throw error;
-        }
-    }
-
     async update(id, data) {
-        try {
-            const item = await this.model.findByIdAndUpdate(id, data, { 'new': true });
-           // return new HttpResponse(item);
-        } catch (errors) {
-            throw errors;
-        }
+    try {
+        if (!fs.existsSync(this.filePath)) throw new Error('File not found');
+
+        const content = fs.readFileSync(this.filePath, 'utf8');
+        let allDocuments = JSON.parse(content);
+
+        const index = allDocuments.findIndex(doc => doc.id === Number(id));
+        if (index === -1) throw new Error('Document not found');
+
+        allDocuments[index] = { ...allDocuments[index], ...data };
+
+        fs.writeFileSync(this.filePath, JSON.stringify(allDocuments, null, 2));
+        return allDocuments[index];
+    } catch (err) {
+        throw new Error('Error updating document: ' + err.message);
     }
+}
 
     async delete(id) {
         try {
