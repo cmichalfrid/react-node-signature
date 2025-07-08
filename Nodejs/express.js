@@ -16,12 +16,12 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api/document', documentsRouter);
 
 // ░░░ 2. Static React build
-app.use(express.static(path.join(__dirname, '../React/my-app/build')));
+app.use(express.static(path.join(__dirname, 'public')));
 
-// ░░░ 3. React fallback – בסוף!
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../React/my-app/build', 'index.html'));
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
+
 
 // ░░░ Start server
 app.listen(port, '0.0.0.0', () => {
