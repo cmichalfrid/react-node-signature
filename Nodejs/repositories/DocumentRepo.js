@@ -1,11 +1,13 @@
 const fs = require('fs');
 const Repository = require('./Repository.js');
 const Document = require('../models/document.model.js');
+const path = require('path'); // ← הוספה חשובה
 
 class DocumentRepo extends Repository {
     constructor() {
         super(Document);
-        this.filePath = './data/documents.json';
+        this.filePath = path.join(__dirname, '../data/documents.json');
+
     }
 
     async getAll() {
