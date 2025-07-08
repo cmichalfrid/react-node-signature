@@ -2,6 +2,7 @@ const autoBind = require('auto-bind');
 const { filePath } = require('./DocumentRepo');
 const { json } = require('express');
 const fs = require('fs');
+const path = require('path'); // ← הוספה חשובה
 
 class Repository {
     constructor(model) {
