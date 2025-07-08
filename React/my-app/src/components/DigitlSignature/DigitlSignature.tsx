@@ -23,6 +23,8 @@ function DigitlSignature() {
     useEffect(() => {
         if (idFile) {
             getDocumentForId(idFile).then(data => {
+                 const blob = new Blob([data.data], { type: 'application/pdf' });
+            const url = URL.createObjectURL(blob);
                 dispatch(setUrlPdf(data.data.url));
                 dispatch(setId(data.data.id));
             })
