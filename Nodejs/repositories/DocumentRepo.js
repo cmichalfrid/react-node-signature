@@ -35,7 +35,7 @@ class DocumentRepo extends Repository {
             }
 
             const newId = await this.getNextDocumentId(allDocuments);
-            const newFile = new Document({ ...data, id: newId });
+            const newFile = { ...data, id: newId };
             allDocuments.push(newFile);
 
             fs.writeFileSync(this.filePath, JSON.stringify(allDocuments, null, 2));
