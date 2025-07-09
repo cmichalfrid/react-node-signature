@@ -1,20 +1,29 @@
-const fs = require('fs');
+const path = require('path');
+const Database = require('better-sqlite3');
 const Repository = require('./Repository.js');
 const Document = require('../models/document.model.js');
-const path = require('path'); // ← הוספה חשובה
 
 class DocumentRepo extends Repository {
     constructor() {
         super(Document);
-        this.filePath = path.join(__dirname, '../data/documents.json');
+        const dbPath = path.join(__dirname, '../data/database.db');
+        this.db = new Database(dbPath);
 
+        this.db.prepare(`
+            CREATE TABLE IF NOT EXISTS documents (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                email TEXT NOT NULL,
+                fileData TEXT NOT NULL,
+                signedFileData TEXT
+            )
+        `).run();
     }
 
     async getAll() {
         try {
-            if (!fs.existsSync(this.filePath)) return [];
-            const content = fs.readFileSync(this.filePath, 'utf8');
-            return JSON.parse(content);
+            const stmt = this.db.prepare('SELECT * FROM documents');
+            return stmt.all();
         } catch (err) {
             throw new Error('שגיאה בקריאת המסמכים: ' + err.message);
         }
@@ -22,43 +31,23 @@ class DocumentRepo extends Repository {
 
     async insert(data) {
         try {
-            let allDocuments = [];
-
-            if (fs.existsSync(this.filePath)) {
-                const content = fs.readFileSync(this.filePath, 'utf8');
-                try {
-                    const parsed = JSON.parse(content);
-                    allDocuments = Array.isArray(parsed) ? parsed : [];
-                } catch {
-                    allDocuments = [];
-                }
-            }
-
-            const newId = await this.getNextDocumentId(allDocuments);
-            const newFile = { ...data, id: newId };
-            allDocuments.push(newFile);
-
-            fs.writeFileSync(this.filePath, JSON.stringify(allDocuments, null, 2));
-
-            return newFile.id;
+            const stmt = this.db.prepare(
+                'INSERT INTO documents (name, email, fileData) VALUES (?, ?, ?)'
+            );
+            const result = stmt.run(data.name, data.email, data.fileData);
+            return result.lastInsertRowid;
         } catch (err) {
             throw new Error('שגיאה בשמירת המסמך: ' + err.message);
         }
     }
 
-    async getNextDocumentId(allDocuments) {
+    async getNextDocumentId() {
         try {
-            if (allDocuments.length === 0) return 1;
-
-            const ids = allDocuments
-                .map(doc => doc.id)
-                .filter(id => typeof id === 'number');
-
-            if (ids.length === 0) return 1;
-
-            return Math.max(...ids) + 1;
-        } catch (error) {
-            throw error;
+            const stmt = this.db.prepare('SELECT MAX(id) as maxId FROM documents');
+            const row = stmt.get();
+            return row.maxId ? row.maxId + 1 : 1;
+        } catch (err) {
+            throw err;
         }
     }
 }

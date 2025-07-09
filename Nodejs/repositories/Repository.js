@@ -1,21 +1,29 @@
 const autoBind = require('auto-bind');
-const { filePath } = require('./DocumentRepo');
-const { json } = require('express');
-const fs = require('fs');
-const path = require('path'); // ← הוספה חשובה
+const Database = require('better-sqlite3');
+const path = require('path');
 
 class Repository {
     constructor(model) {
         this.model = model;
-        this.filePath = path.join(__dirname, '../data/documents.json');
+        this.db = new Database(path.join(__dirname, '../data/database.db'));
+
+        this.db.prepare(`
+            CREATE TABLE IF NOT EXISTS documents (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                email TEXT NOT NULL,
+                fileData TEXT NOT NULL,
+                signedFileData TEXT
+            )
+        `).run();
+
         autoBind(this);
     }
 
     async getAll(query) {
         try {
-            if (!fs.existsSync(this.filePath)) return [];
-            const content = fs.readFileSync(this.filePath, 'utf8');
-            return JSON.parse(content);
+            const stmt = this.db.prepare('SELECT * FROM documents');
+            return stmt.all();
         } catch (err) {
             throw new Error('שגיאה בקריאת המסמכים: ' + err.message);
         }
@@ -23,52 +31,46 @@ class Repository {
 
     async get(id) {
         try {
-            if (!fs.existsSync(this.filePath)) return null;
-
-            const content = fs.readFileSync(this.filePath)
-            const allDocuments = JSON.parse(content)
-            console.log('Looking for id:', id);
-            console.log('All documents:', allDocuments);
-            const findDocumentId = allDocuments.find(a => a.id === Number(id))
-            return findDocumentId || null;
-        }
-        catch (error) {
+            const stmt = this.db.prepare('SELECT * FROM documents WHERE id = ?');
+            return stmt.get(id) || null;
+        } catch (error) {
             throw new Error(`Database error: ${error.message}`);
         }
     }
 
     async update(id, data) {
-    try {
-        if (!fs.existsSync(this.filePath)) throw new Error('File not found');
+        try {
+            const existing = this.db.prepare('SELECT * FROM documents WHERE id = ?').get(id);
+            if (!existing) throw new Error('Document not found');
 
-        const content = fs.readFileSync(this.filePath, 'utf8');
-        let allDocuments = JSON.parse(content);
+            const updated = { ...existing, ...data };
 
-        const index = allDocuments.findIndex(doc => doc.id === Number(id));
-        if (index === -1) throw new Error('Document not found');
+            this.db.prepare(`
+                UPDATE documents
+                SET name = ?, email = ?, fileData = ?, signedFileData = ?
+                WHERE id = ?
+            `).run(updated.name, updated.email, updated.fileData, updated.signedFileData, id);
 
-        allDocuments[index] = { ...allDocuments[index], ...data };
-
-        fs.writeFileSync(this.filePath, JSON.stringify(allDocuments, null, 2));
-        return allDocuments[index];
-    } catch (err) {
-        throw new Error('Error updating document: ' + err.message);
+            return updated;
+        } catch (err) {
+            throw new Error('Error updating document: ' + err.message);
+        }
     }
-}
 
     async delete(id) {
         try {
-            const item = await this.model.findByIdAndDelete(id);
-            if (!item) {
+            const stmt = this.db.prepare('DELETE FROM documents WHERE id = ?');
+            const result = stmt.run(id);
+
+            if (result.changes === 0) {
                 const error = new Error('Item not found');
                 error.statusCode = 404;
                 throw error;
-            } else {
-              //  return new HttpResponse(item, { 'deleted': true });
             }
         } catch (errors) {
             throw errors;
         }
     }
 }
+
 module.exports = Repository;
