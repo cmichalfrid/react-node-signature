@@ -1,5 +1,5 @@
 const path = require('path');
-const Database = require('better-sqlite3');
+const Database = require('sqlite3');
 const Repository = require('./Repository.js');
 const Document = require('../models/document.model.js');
 

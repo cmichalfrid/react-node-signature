@@ -1,5 +1,5 @@
 const autoBind = require('auto-bind');
-const Database = require('better-sqlite3');
+const Database = require('sqlite3');
 const path = require('path');
 
 class Repository {
