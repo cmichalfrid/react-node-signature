@@ -4,7 +4,6 @@ const libre = require('libreoffice-convert');
 const nodemailer = require('nodemailer');
 const sgMail = require('@sendgrid/mail');
 const { PDFDocument, rgb, StandardFonts } = require('pdf-lib');
-
 const Service = require('./Service.js');
 const DocumentRepo = require('../repositories/DocumentRepo.js');
 
@@ -179,7 +178,6 @@ class DocumentService extends Service {
 }
 
 module.exports = new DocumentService();
-const fs = require('fs');
 const path = require('path');
 const libre = require('libreoffice-convert');
 const nodemailer = require('nodemailer');
