@@ -7,19 +7,22 @@ export const documentUrlSlice: any = createSlice({
     reducers: {
         setUrlPdf: (state, action: PayloadAction<string>) => {
             state.url = action.payload
-
+            localStorage.setItem('url', action.payload);
         },
         setId: (state, action: PayloadAction<number>) => {
             state.id = action.payload;
+            localStorage.setItem('id', action.payload.toString());
         },
         setEmail: (state, action: PayloadAction<string>) => {
             state.email = action.payload;
+            localStorage.setItem('email', action.payload);
         },
         setFile: (state, action: PayloadAction<string>) => {
             state.file = action.payload;
+            localStorage.setItem('file', action.payload);
         }
     }
 })
 
-export const { setUrlPdf, setId,setEmail,setFile } = documentUrlSlice.actions
+export const { setUrlPdf, setId, setEmail, setFile } = documentUrlSlice.actions
 export default documentUrlSlice.reducer
