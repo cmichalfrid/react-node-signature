@@ -44,6 +44,7 @@ function DocumentFlow() {
         }
         insertDocument(formData)
             .then(data => {
+                
                 console.log(data.data);
                 dispatch(setUrlPdf(`/api/document/${data.data.id}`)); // לשימוש ב-DigitlSignature
                 dispatch(setId(data.data.id));

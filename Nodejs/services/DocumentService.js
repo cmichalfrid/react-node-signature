@@ -49,8 +49,8 @@ class DocumentService extends Service {
                 message: 'המסמך הומר ונשמר בהצלחה',
                 email: savedDoc.email,
                 file: savedDoc.fileData,
-                link: `/signature/${savedDoc.id}`
-
+                link: `/signature/${savedDoc.id}`,
+                id:savedDoc.id
             });
 
         } catch (error) {
