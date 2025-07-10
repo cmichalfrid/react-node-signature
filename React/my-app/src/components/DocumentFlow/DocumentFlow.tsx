@@ -49,7 +49,7 @@ for (let pair of formData.entries()) {
                 dispatch(setId(data.data.id))
                 console.log(data.data.id);
                 
-                setlinkToShare(`${window.location.origin}/signature/${data.data.id}`)
+                setlinkToShare(data.data.link)
             })
             .finally(() => setLoading(false));
     };

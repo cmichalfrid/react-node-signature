@@ -48,7 +48,9 @@ class DocumentService extends Service {
             res.status(201).json({
                 message: 'המסמך הומר ונשמר בהצלחה',
                 email: savedDoc.email,
-                file: savedDoc.fileData, 
+                file: savedDoc.fileData,
+                link: `${req.protocol}://${req.get('host')}/signature/${savedDoc.id}`
+
             });
 
         } catch (error) {
@@ -64,7 +66,7 @@ class DocumentService extends Service {
 
             const pdfBuffer = Buffer.from(file.fileData, 'base64');
             res.setHeader('Content-Type', 'application/pdf');
-            res.setHeader('Content-Disposition', `inline; filename="${file.name}.pdf"`); 
+            res.setHeader('Content-Disposition', `inline; filename="${file.name}.pdf"`);
             res.send(pdfBuffer);
 
         } catch (error) {

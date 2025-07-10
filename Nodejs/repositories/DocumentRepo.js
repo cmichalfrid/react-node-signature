@@ -5,13 +5,11 @@ class DocumentRepo {
     constructor() {
         this.filePath = path.join(__dirname, '../data/documents.json');
 
-        // יצירת הקובץ אם הוא לא קיים
         if (!fs.existsSync(this.filePath)) {
             fs.writeFileSync(this.filePath, JSON.stringify([]));
         }
     }
 
-    // קבלת כל המסמכים
     async getAll() {
         try {
             const data = fs.readFileSync(this.filePath, 'utf-8');
