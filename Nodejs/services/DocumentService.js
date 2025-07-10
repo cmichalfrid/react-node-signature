@@ -48,7 +48,7 @@ class DocumentService extends Service {
             res.status(201).json({
                 message: 'המסמך הומר ונשמר בהצלחה',
                 email: savedDoc.email,
-                file: savedDoc.fileData, // PDF encoded
+                file: savedDoc.fileData, 
             });
 
         } catch (error) {
