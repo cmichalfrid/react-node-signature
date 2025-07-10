@@ -28,7 +28,7 @@ class DocumentRepo {
             const newDocument = { id: newId, ...document };
             documents.push(newDocument);
             fs.writeFileSync(this.filePath, JSON.stringify(documents, null, 2));
-            return newId;
+            return newDocument;
         } catch (err) {
             throw new Error('שגיאה בשמירת המסמך: ' + err.message);
         }
