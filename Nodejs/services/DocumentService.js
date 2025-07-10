@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const libre = require('libreoffice-convert');
 const nodemailer = require('nodemailer');
-const sgMail = require('@sendgrid/mail');
+const sgMail = require('sgMail');
 const { PDFDocument, rgb, StandardFonts } = require('pdf-lib');
 
 const Service = require('./Service.js');
@@ -16,9 +16,6 @@ class DocumentService extends Service {
     }
 
     async insert(req, res, next) {
-        console.log("📥 קובץ:", req.file);
-        console.log("📥 שם:", req.body.name);
-        console.log("📥 מייל:", req.body.email);
         try {
             const file = req.file;
             const { name, email } = req.body;
@@ -36,8 +33,6 @@ class DocumentService extends Service {
                 fs.mkdirSync(pdfDir, { recursive: true });
             }
 
-            const pdfFilePath = path.join(pdfDir, pdfFileName);
-
             const pdfBuffer = await new Promise((resolve, reject) => {
                 libre.convert(wordBuffer, '.pdf', undefined, (err, done) => {
                     if (err) return reject(err);
@@ -48,11 +43,12 @@ class DocumentService extends Service {
             const base64Data = pdfBuffer.toString('base64');
 
             const savedDoc = await this.repo.insert({ name, email, fileData: base64Data });
-            console.log('inserted document id:', savedDoc);
+            console.log('inserted document id:', savedDoc.id);
 
             res.status(201).json({
                 message: 'המסמך הומר ונשמר בהצלחה',
-                id: savedDoc,
+                email: savedDoc.email,
+                file: savedDoc.fileData, // PDF encoded
             });
 
         } catch (error) {
@@ -67,11 +63,8 @@ class DocumentService extends Service {
             if (!file) return res.status(404).send("מסמך לא נמצא");
 
             const pdfBuffer = Buffer.from(file.fileData, 'base64');
-
-            // הגדרת headers נכונים להצגת PDF בדפדפן או הורדה
             res.setHeader('Content-Type', 'application/pdf');
             res.setHeader('Content-Disposition', `inline; filename="${file.name}.pdf"`); 
-
             res.send(pdfBuffer);
 
         } catch (error) {
@@ -88,11 +81,9 @@ class DocumentService extends Service {
             const { fileData, email, name } = file;
             const signatureDataUrl = req.body.signature;
 
-            // טען PDF מ-base64 בזיכרון
             const pdfBuffer = Buffer.from(fileData, 'base64');
             const pdfDoc = await PDFDocument.load(pdfBuffer);
 
-            // המרת חתימה מ-base64
             const signatureImageBytes = Buffer.from(signatureDataUrl.split(',')[1], 'base64');
             const signatureImage = await pdfDoc.embedPng(signatureImageBytes);
 
@@ -131,22 +122,17 @@ class DocumentService extends Service {
                 color: rgb(0, 0, 0),
             });
 
-            // שמור PDF חתום כ-buffer
             const signedPdfBytes = await pdfDoc.save();
-
-            // המרת ה-PDF החתום ל-base64
             const signedBase64 = signedPdfBytes.toString('base64');
 
-            // עדכן את המסמך בחתום במסד (אם תרצה לשמור)
             await this.repo.update(req.body.id, { signedFileData: signedBase64 });
 
-            // שלח מייל עם ה-PDF החתום ישירות מהזיכרון
             const transporter = nodemailer.createTransport({
                 service: 'gmail',
                 auth: {
                     user: 'mf0583220705@gmail.com',
-                    pass: 'jekd btkj vejo enuk'
-                }
+                    pass: 'jekd btkj vejo enuk',
+                },
             });
 
             await transporter.sendMail({
@@ -158,7 +144,7 @@ class DocumentService extends Service {
                     {
                         filename: 'signed_document.pdf',
                         content: signedPdfBytes,
-                        contentType: 'application/pdf'
+                        contentType: 'application/pdf',
                     },
                 ],
             });

@@ -44,7 +44,7 @@ for (let pair of formData.entries()) {
 }
         insertDocument(formData)
             .then(data => {
-                console.log(data);            
+                console.log("jgejwhkdjalskg"+data);            
                 dispatch(setUrlPdf(data.data.link))
                 dispatch(setId(data.data.id))
                 console.log(data.data.id);

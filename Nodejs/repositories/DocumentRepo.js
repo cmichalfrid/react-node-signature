@@ -1,54 +1,45 @@
+const fs = require('fs');
 const path = require('path');
-const Database = require('sqlite3');
-const Repository = require('./Repository.js');
-const Document = require('../models/document.model.js');
 
-class DocumentRepo extends Repository {
+class DocumentRepo {
     constructor() {
-        super(Document);
-        const dbPath = path.join(__dirname, '../data/database.db');
-        this.db = new Database(dbPath);
+        this.filePath = path.join(__dirname, '../data/documents.json');
 
-        this.db.prepare(`
-            CREATE TABLE IF NOT EXISTS documents (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT NOT NULL,
-                email TEXT NOT NULL,
-                fileData TEXT NOT NULL,
-                signedFileData TEXT
-            )
-        `).run();
+        // יצירת הקובץ אם הוא לא קיים
+        if (!fs.existsSync(this.filePath)) {
+            fs.writeFileSync(this.filePath, JSON.stringify([]));
+        }
     }
 
+    // קבלת כל המסמכים
     async getAll() {
         try {
-            const stmt = this.db.prepare('SELECT * FROM documents');
-            return stmt.all();
+            const data = fs.readFileSync(this.filePath, 'utf-8');
+            return JSON.parse(data);
         } catch (err) {
             throw new Error('שגיאה בקריאת המסמכים: ' + err.message);
         }
     }
 
-    async insert(data) {
+    async insert(document) {
         try {
-            const stmt = this.db.prepare(
-                'INSERT INTO documents (name, email, fileData) VALUES (?, ?, ?)'
-            );
-            const result = stmt.run(data.name, data.email, data.fileData);
-            return result.lastInsertRowid;
+            const documents = await this.getAll();
+            const newId = await this.getNextDocumentId(documents);
+            const newDocument = { id: newId, ...document };
+            documents.push(newDocument);
+            fs.writeFileSync(this.filePath, JSON.stringify(documents, null, 2));
+            return newId;
         } catch (err) {
             throw new Error('שגיאה בשמירת המסמך: ' + err.message);
         }
     }
 
-    async getNextDocumentId() {
-        try {
-            const stmt = this.db.prepare('SELECT MAX(id) as maxId FROM documents');
-            const row = stmt.get();
-            return row.maxId ? row.maxId + 1 : 1;
-        } catch (err) {
-            throw err;
+    async getNextDocumentId(documents = null) {
+        if (!documents) {
+            documents = await this.getAll();
         }
+        if (documents.length === 0) return 1;
+        return Math.max(...documents.map(doc => doc.id)) + 1;
     }
 }
 
