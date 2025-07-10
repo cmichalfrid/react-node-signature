@@ -15,8 +15,8 @@ export function sendSignature(data: any) {
   return axios.post(`${API_BASE_URL}/signature`, data);
 }
 
-export function getDocumentForId(id: any) {
-  return axios.get(`${API_BASE_URL}/signature/${id}`, {
-    responseType: 'blob',
-  });
-}
+// export function getDocumentForId(id: any) {
+//   return axios.get(`${API_BASE_URL}/signature/${id}`, {
+//     responseType: 'blob',
+//   });
+// }

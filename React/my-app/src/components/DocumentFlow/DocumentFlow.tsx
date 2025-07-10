@@ -6,12 +6,12 @@ import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { getDocumentId, insertDocument } from '../../services/document.service';
 import { useDispatch, useSelector } from 'react-redux';
-import { setId, setUrlPdf } from '../../redux/slices/documentUrlSlice';
+import { setEmail, setFile, setId, setUrlPdf } from '../../redux/slices/documentUrlSlice';
 import { useNavigate } from 'react-router-dom';
 
 
 function DocumentFlow() {
-        console.log("Rendering DocumentFlow component");
+    console.log("Rendering DocumentFlow component");
 
     const [fileName, setFileName] = useState<File | undefined>(undefined);
     const [linkToShare, setlinkToShare] = useState<string>();
@@ -20,15 +20,15 @@ function DocumentFlow() {
     const dispatch = useDispatch();
 
     const handleChange = (event: any) => {
-            console.log('File selected:', event.target.files[0]);
+        console.log('File selected:', event.target.files[0]);
 
         setFileName(event.target.files[0])
     }
     const sendToServer = (value: DocumentModel) => {
-          console.log("📨 sendToServer called with:", value, fileName);
+        console.log("📨 sendToServer called with:", value, fileName);
 
-  console.log("📨 sendToServer called with:", value);
-        
+        console.log("📨 sendToServer called with:", value);
+
         if (!fileName) {
             alert('אנא בחר קובץ לפני השליחה');
             return;
@@ -38,18 +38,17 @@ function DocumentFlow() {
         formData.append('file', fileName);
         formData.append('name', value.name);
         formData.append('email', value.email);
-console.log("נשלח ל־insertDocument:", formData);
-for (let pair of formData.entries()) {
-  console.log(pair[0]+ ':', pair[1]);
-}
+        console.log("נשלח ל־insertDocument:", formData);
+        for (let pair of formData.entries()) {
+            console.log(pair[0] + ':', pair[1]);
+        }
         insertDocument(formData)
             .then(data => {
-                console.log(data);            
-                dispatch(setUrlPdf(data.data.link))
-                dispatch(setId(data.data.id))
-                console.log(data.data.id);
-                
-                setlinkToShare(data.data.link)
+                dispatch(setUrlPdf(`/api/document/${data.data.id}`)); // לשימוש ב-DigitlSignature
+                dispatch(setId(data.data.id));
+                dispatch(setEmail(data.data.email));
+                dispatch(setFile(data.data.file)); // אם מחזיר את הקובץ (Base64)
+                setlinkToShare(`/signature/${data.data.id}`);
             })
             .finally(() => setLoading(false));
     };
@@ -111,7 +110,7 @@ for (let pair of formData.entries()) {
                 </p>
             )}
         </form>
-    
+
     </div>
 }
 
