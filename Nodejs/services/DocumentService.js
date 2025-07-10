@@ -49,7 +49,7 @@ class DocumentService extends Service {
                 message: 'המסמך הומר ונשמר בהצלחה',
                 email: savedDoc.email,
                 file: savedDoc.fileData,
-                link: `${req.protocol}://${req.get('host')}/signature/${savedDoc.id}`
+                link: `/api/document/signature/${savedDoc.id}`
 
             });
 
