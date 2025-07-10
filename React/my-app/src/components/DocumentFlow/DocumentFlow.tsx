@@ -46,7 +46,7 @@ function DocumentFlow() {
             .then(data => {
 
                 console.log(data.data);
-                dispatch(setUrlPdf(`/api/document/${data.data.id}`)); 
+                dispatch(setUrlPdf(`/api/document/${data.data.id}`.trim())); 
                 dispatch(setId(data.data.id));
                 dispatch(setEmail(data.data.email));
                 dispatch(setFile(data.data.file)); // אם מחזיר את הקובץ (Base64)
