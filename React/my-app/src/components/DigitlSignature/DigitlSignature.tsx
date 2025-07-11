@@ -13,12 +13,12 @@ function DigitlSignature() {
     const sigCanvas = useRef<SignatureCanvas>(null!);
     const documentUrlSlice = useSelector((store: any) => store.documentUrlSlice);
     const dispatch = useDispatch();
-   
+
     const defaultLayoutPluginInstance = defaultLayoutPlugin();
     const [showViewer, setShowViewer] = useState(false);
     const id = documentUrlSlice.id
     const file = documentUrlSlice.file
-    const pdfUrl=`data:application/pdf;base64,${file}`
+    const pdfUrl = file ? `data:application/pdf;base64,${file}` : '';
     const saveSignature = () => {
         if (!id) {
             alert('לא ניתן לשמור חתימה: מזהה מסמך חסר');
@@ -37,7 +37,7 @@ function DigitlSignature() {
         <div className='DigitlSignature' dir="rtl" style={{ textAlign: 'center', padding: '2rem' }}>
             <h2>חתימה על המסמך</h2>
 
-            { pdfUrl? (
+            {pdfUrl ? (
                 <>
                     {!showViewer ? (
                         <div
@@ -88,7 +88,7 @@ function DigitlSignature() {
                             }}
                         >
                             <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
-                                <Viewer fileUrl={url} plugins={[defaultLayoutPluginInstance]} />
+                                <Viewer fileUrl={pdfUrl} plugins={[defaultLayoutPluginInstance]} />
                             </Worker>
                         </div>
                     )}
