@@ -1,5 +1,5 @@
-# שלב 1: בניית אפליקציית React
-FROM node:18-slim as build-react
+# שלב 1: בניית React
+FROM node:18-slim AS build-react
 
 WORKDIR /react-app
 COPY React/my-app/package*.json ./
@@ -7,29 +7,29 @@ RUN npm install
 COPY React/my-app ./
 RUN npm run build
 
-# שלב 2: הרצת שרת Node.js
+# שלב 2: בניית ה־Image הסופי
 FROM node:18-slim
 
-# התקנת LibreOffice (למסמכים)
+# התקנת LibreOffice (אם דרוש)
 RUN apt-get update && \
     apt-get install -y libreoffice && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# תיקייה ראשית להרצת השרת
-WORKDIR /app
+# הגדרת תיקיית הריצה
+WORKDIR /app/Nodejs
 
-# התקנת תלויות Node.js
+# העתקת והתממשקות התלויות של ה‑Node
 COPY Nodejs/package*.json ./
 RUN npm install
 
-# העתקת כל קבצי Node.js
+# העתקת שאר הקוד של ה‑Node (כולל express.js ורוטרס)
 COPY Nodejs ./
 
-# ✅ העתקת build ל־/app/build (כדי ש־Express ימצא)
+# העתקת הבנייה של React אל תיקיית build במשנה של ה‑Node
 COPY --from=build-react /react-app/build ./build
 
-# פתיחת הפורט
+# חשיפת הפורט
 EXPOSE 3000
 
-# הרצת השרת
+# הרצת השרת מתוך Nodejs/express.js
 CMD ["node", "express.js"]
