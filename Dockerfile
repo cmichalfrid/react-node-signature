@@ -24,8 +24,8 @@ RUN cd Nodejs && npm install
 # העתקת קוד Nodejs
 COPY Nodejs ./Nodejs
 
-# ✅ העתקת React build ל־Nodejs/public (כמו ש-Express מחפש)
-COPY --from=build-react /react-app/build ./Nodejs/public
+# ✅ העתקת React build ל־Nodejs/build (שימו לב – זה השינוי!)
+COPY --from=build-react /react-app/build ./Nodejs/build
 
 # פורט
 EXPOSE 3000
