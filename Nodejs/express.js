@@ -8,7 +8,7 @@ const app = express();
 
 const port = process.env.PORT || 3000;
 
-const buildPath = path.join(__dirname, 'client/build');
+const buildPath = path.join(__dirname, 'React/my-app/build');
 
 console.log('Checking client/build folder contents:');
 try {
