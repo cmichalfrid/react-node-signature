@@ -7,10 +7,8 @@ const fs = require('fs');
 const app = express();
 const port = process.env.PORT || 3000;
 
-// React build copied to Nodejs/build (see Dockerfile)
 const buildPath = path.join(__dirname, 'build');
 
-// בדיקת קיום index.html
 console.log('📦 Checking build folder contents:');
 try {
   const files = fs.readdirSync(buildPath);
@@ -28,19 +26,25 @@ app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// ░░░ 1. API routes
+// 1. API routes
 const documentsRouter = require('./routers/document.router.js');
 app.use('/api/document', documentsRouter);
 
-// ░░░ 2. Static React build
-app.use(express.static(buildPath));
+// 2. Static React build - חשוב: לבדוק שהקבצים קיימים
+app.use(express.static(buildPath, {
+  fallthrough: false, // אם קובץ לא נמצא, יחזיר 404 ולא ימשיך הלאה ל-get('*')
+}));
 
-// ✅ החזרת index.html לכל נתיב לא מוכר (כדי ש־React Router יעבוד)
+// 3. אם הבקשה לא התאימה לאף קובץ סטטי ו/או API, מחזירים index.html (React Router)
 app.get('*', (req, res) => {
-  res.sendFile(path.join(buildPath, 'index.html'));
+  res.sendFile(path.join(buildPath, 'index.html'), (err) => {
+    if (err) {
+      console.error('Error sending index.html:', err);
+      res.status(500).send(err);
+    }
+  });
 });
 
-// ░░░ Start server
 app.listen(port, '0.0.0.0', () => {
   console.log(`🚀 Server listening on port ${port}`);
 });
