@@ -16,11 +16,8 @@ function DigitlSignature() {
 
     const defaultLayoutPluginInstance = defaultLayoutPlugin();
     const [showViewer, setShowViewer] = useState(false);
-
-    // משתמשים ישירות בנתונים מה־Redux
-    const { url, id, email, file } = documentUrlSlice;
-
-    // פונקציה לשמירת החתימה ושליחתה לשרת
+    const id = documentUrlSlice.id
+    const file = documentUrlSlice.file
     const saveSignature = () => {
         if (!id) {
             alert('לא ניתן לשמור חתימה: מזהה מסמך חסר');
@@ -39,7 +36,7 @@ function DigitlSignature() {
         <div className='DigitlSignature' dir="rtl" style={{ textAlign: 'center', padding: '2rem' }}>
             <h2>חתימה על המסמך</h2>
 
-            {url ? (
+            {`data:application/pdf;base64,${file}` ? (
                 <>
                     {!showViewer ? (
                         <div
