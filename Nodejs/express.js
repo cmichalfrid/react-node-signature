@@ -8,9 +8,10 @@ const app = express();
 
 const port = process.env.PORT || 3000;
 
-const buildPath = path.join(__dirname, 'React/my-app/build');
+// נתיב לתיקיית build בתיקיית Nodejs (הנחה: העתקת את תיקיית build לכאן)
+const buildPath = path.join(__dirname, 'build');
 
-console.log('Checking client/build folder contents:');
+console.log('Checking build folder contents:');
 try {
   const files = fs.readdirSync(buildPath);
   console.log(files);
@@ -22,19 +23,19 @@ app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// ░░░ 1. API routes – בהתחלה
+// ░░░ 1. API routes – קודם כל נתיבי API
 const documentsRouter = require('./routers/document.router.js');
 app.use('/api/document', documentsRouter);
 
-// ░░░ 2. Static React build
+// ░░░ 2. סטטיק ל־React build
 app.use(express.static(buildPath));
 
-// ✅ חשוב – החזרת index.html לכל נתיב שלא נמצא כדי ש-React Router יעבוד
+// ✅ החזרת index.html לכל נתיב שלא נמצא, כדי ש־React Router יעבוד
 app.get('*', (req, res) => {
   res.sendFile(path.join(buildPath, 'index.html'));
 });
 
-// ░░░ Start server
+// ░░░ התחלת השרת
 app.listen(port, '0.0.0.0', () => {
   console.log(`Server listening on port ${port}`);
 });
