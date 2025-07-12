@@ -30,11 +30,11 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 const documentsRouter = require('./routers/document.router.js');
 app.use('/api/document', documentsRouter);
 
-// 2. Static React build (ללא fallthrough:false)
+// 2. Static React build
 app.use(express.static(buildPath));
 
-// 3. כל נתיב שלא נמצא בסטטיים או API מחזיר את index.html
-app.get('*', (req, res) => {
+// 3. כל נתיב שלא מתחיל ב-/api יחזיר את index.html
+app.get(/^\/(?!api).*/, (req, res) => {
   res.sendFile(path.join(buildPath, 'index.html'), (err) => {
     if (err) {
       console.error('Error sending index.html:', err);
