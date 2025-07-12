@@ -21,15 +21,15 @@ function DigitlSignature() {
     const defaultLayoutPluginInstance = defaultLayoutPlugin();
     const [showViewer, setShowViewer] = useState(false);
     useEffect(() => {
-        if (idFile) {
-            getDocumentForId(idFile).then(data => {
-                 const blob = new Blob([data.data], { type: 'application/pdf' });
+    if (idFile) {
+        getDocumentForId(idFile).then(response => {
+            const blob = new Blob([response.data], { type: 'application/pdf' });
             const url = URL.createObjectURL(blob);
-                dispatch(setUrlPdf(data.data.url));
-                dispatch(setId(data.data.id));
-            })
-        }
-    }, [id])
+            dispatch(setUrlPdf(url)); // <== כאן הכנסנו את הקישור הנכון
+            dispatch(setId(idFile));
+        });
+    }
+}, [id]);
     const saveSignature = () => {
         const data = {
             id: documentUrlSlice.id,
