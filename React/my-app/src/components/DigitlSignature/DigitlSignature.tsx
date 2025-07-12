@@ -23,6 +23,8 @@ function DigitlSignature() {
     useEffect(() => {
     if (idFile) {
         getDocumentForId(idFile).then(response => {
+            console.log(response);
+            
             const blob = new Blob([response.data], { type: 'application/pdf' });
             const url = URL.createObjectURL(blob);
             dispatch(setUrlPdf(url)); // <== כאן הכנסנו את הקישור הנכון
