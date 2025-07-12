@@ -16,7 +16,7 @@ export function sendSignature(data: any) {
 }
 
 export function getDocumentForId(id: any) {
-  return axios.get(`${API_BASE_URL}/${id}`, {
+  return axios.get(`${API_BASE_URL}/signature/${id}`, {
     responseType: 'blob',
   });
 }
