@@ -90,7 +90,7 @@ class DocumentService extends Service {
             const signatureImageBytes = Buffer.from(signatureDataUrl.split(',')[1], 'base64');
             const signatureImage = await pdfDoc.embedPng(signatureImageBytes);
 
-            const page = pdfDoc.getPages()[0];
+            const page = pdfDoc.getPages()[pages.length - 1];
             const lineStartX = 230;
             const lineEndX = 360;
             const lineY = 130;
