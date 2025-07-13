@@ -108,7 +108,6 @@ function DocumentFlow() {
             {loading && <p>⏳ יוצרים את הלינק...</p>}
             {linkToShare && (
                 <p>
-                    לינק למסמך לחתימה:{" "}
                     <a
                         href={`https://react-node-signature-gqey.onrender.com/${linkToShare}`}
                         target="_blank"
