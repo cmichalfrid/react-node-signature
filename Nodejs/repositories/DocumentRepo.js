@@ -1,8 +1,10 @@
 const fs = require('fs');
 const path = require('path');
+const Repository = require('./Repository');
 
-class DocumentRepo {
+class DocumentRepo extends Repository {
     constructor() {
+        super();
         this.filePath = path.join(__dirname, '../data/documents.json');
 
         if (!fs.existsSync(this.filePath)) {
