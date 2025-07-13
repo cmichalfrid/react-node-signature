@@ -1,10 +1,8 @@
 const fs = require('fs');
 const path = require('path');
-const Repository = require('./Repository');
 
-class DocumentRepo extends Repository {
+class DocumentRepo {
     constructor() {
-        super();
         this.filePath = path.join(__dirname, '../data/documents.json');
 
         if (!fs.existsSync(this.filePath)) {
@@ -32,6 +30,32 @@ class DocumentRepo extends Repository {
         } catch (err) {
             throw new Error('שגיאה בשמירת המסמך: ' + err.message);
         }
+    }
+
+    async get(id) {
+        const documents = await this.getAll();
+        return documents.find(doc => doc.id == id) || null;
+    }
+
+    async update(id, data) {
+        const documents = await this.getAll();
+        const index = documents.findIndex(doc => doc.id == id);
+        if (index === -1) throw new Error('Document not found');
+
+        documents[index] = { ...documents[index], ...data };
+        fs.writeFileSync(this.filePath, JSON.stringify(documents, null, 2));
+        return documents[index];
+    }
+
+    async delete(id) {
+        let documents = await this.getAll();
+        const initialLength = documents.length;
+        documents = documents.filter(doc => doc.id != id);
+
+        if (documents.length === initialLength)
+            throw new Error('Document not found');
+
+        fs.writeFileSync(this.filePath, JSON.stringify(documents, null, 2));
     }
 
     async getNextDocumentId(documents = null) {
