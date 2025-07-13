@@ -62,6 +62,7 @@ class DocumentService extends Service {
     async getDocumentForId(req, res, next) {
         try {
             const file = await this.repo.get(req.params.id);
+             console.log('📄 file loaded from repo:', file);
             if (!file) return res.status(404).send("מסמך לא נמצא");
 
             const pdfBuffer = Buffer.from(file.fileData, 'base64');
