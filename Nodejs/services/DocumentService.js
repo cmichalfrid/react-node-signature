@@ -50,7 +50,7 @@ class DocumentService extends Service {
                 email: savedDoc.email,
                 file: savedDoc.fileData,
                 link: `/signature/${savedDoc.id}`,
-                id:savedDoc.id
+                id: savedDoc.id
             });
 
         } catch (error) {
@@ -62,7 +62,7 @@ class DocumentService extends Service {
     async getDocumentForId(req, res, next) {
         try {
             const file = await this.repo.get(req.params.id);
-             console.log('📄 file loaded from repo:', file);
+            console.log('📄 file loaded from repo:', file);
             if (!file) return res.status(404).send("מסמך לא נמצא");
 
             const pdfBuffer = Buffer.from(file.fileData, 'base64');
@@ -90,8 +90,8 @@ class DocumentService extends Service {
             const signatureImageBytes = Buffer.from(signatureDataUrl.split(',')[1], 'base64');
             const signatureImage = await pdfDoc.embedPng(signatureImageBytes);
 
-            const page = pdfDoc.getPages()[pages.length - 1];
-            const lineStartX = 230;
+            const pages = pdfDoc.getPages();
+            const page = pages[pages.length - 1]; const lineStartX = 230;
             const lineEndX = 360;
             const lineY = 130;
 
