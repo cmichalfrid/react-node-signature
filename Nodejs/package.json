@@ -24,6 +24,5 @@
     "nodemailer": "^7.0.4",
     "pdf-lib": "^1.17.1",
     "puppeteer": "^24.11.2",
-    "sqlite3": "^5.1.7"
   }
 }
