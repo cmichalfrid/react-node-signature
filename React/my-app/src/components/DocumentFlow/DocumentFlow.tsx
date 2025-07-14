@@ -49,12 +49,12 @@ function DocumentFlow() {
                 dispatch(setUrlPdf(`/api/document/${data.data.id}`.trim()));
                 dispatch(setId(data.data.id));
                 dispatch(setEmail(data.data.email));
-                dispatch(setFile(data.data.file)); 
-               const fullLink = `https://react-node-signature-gqey.onrender.com/signature/${data.data.id}`;
-console.log("✅ הקישור שנשמר:", fullLink);
-setlinkToShare(fullLink);
+                dispatch(setFile(data.data.file));
+                const fullLink = `https://react-node-signature-gqey.onrender.com/signature/${data.data.id}`.trim();
+                console.log("✅ הקישור שנשמר:", fullLink);
+                setlinkToShare(fullLink);
 
-                
+
             })
             .finally(() => setLoading(false));
     };
