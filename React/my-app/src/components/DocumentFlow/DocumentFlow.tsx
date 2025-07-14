@@ -50,7 +50,7 @@ function DocumentFlow() {
                 dispatch(setId(data.data.id));
                 dispatch(setEmail(data.data.email));
                 dispatch(setFile(data.data.file)); // אם מחזיר את הקובץ (Base64)
-                setlinkToShare(`/signature/${data.data.id}`.trim());
+                setlinkToShare(`https://react-node-signature-gqey.onrender.com/signature/${data.data.id}`.trim());
             })
             .finally(() => setLoading(false));
     };
