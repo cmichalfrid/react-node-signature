@@ -49,8 +49,8 @@ function DocumentFlow() {
                 dispatch(setUrlPdf(`/api/document/${data.data.id}`.trim()));
                 dispatch(setId(data.data.id));
                 dispatch(setEmail(data.data.email));
-                dispatch(setFile(data.data.file)); // אם מחזיר את הקובץ (Base64)
-                setlinkToShare(`https://react-node-signature-gqey.onrender.com/signature/${data.data.id}`.trim());
+                dispatch(setFile(data.data.file)); 
+                setlinkToShare("https://react-node-signature-gqey.onrender.com/signature/${data.data.id}".trim());
             })
             .finally(() => setLoading(false));
     };
@@ -110,7 +110,13 @@ function DocumentFlow() {
                 <div className="share-link">
                     <strong>לינק למסמך לחתימה:</strong>
                     <br />
-                 {linkToShare}
+                    <a
+                        href={linkToShare}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        {linkToShare}
+                    </a>
                 </div>
             )}
         </form>
