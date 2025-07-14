@@ -111,14 +111,8 @@ function DocumentFlow() {
 
             {loading && <p>⏳ יוצרים את הלינק...</p>}
             {linkToShare && (
-                <div className="share-link">
-                    <strong>לינק למסמך לחתימה:</strong>
-                    <br />
-                    <a
-                        href={linkToShare}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
+                <div>
+                    <a href={linkToShare} target="_blank" rel="noopener noreferrer">
                         {linkToShare}
                     </a>
                 </div>
