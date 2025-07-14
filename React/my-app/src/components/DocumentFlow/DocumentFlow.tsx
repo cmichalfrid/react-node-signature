@@ -110,13 +110,7 @@ function DocumentFlow() {
                 <div className="share-link">
                     <strong>לינק למסמך לחתימה:</strong>
                     <br />
-                    <a
-                        href={linkToShare}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        {linkToShare}
-                    </a>
+                 {linkToShare}
                 </div>
             )}
         </form>
