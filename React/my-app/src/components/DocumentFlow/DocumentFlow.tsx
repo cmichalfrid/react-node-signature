@@ -44,9 +44,9 @@ function DocumentFlow() {
   .then(data => {
     console.log("🎯 data from server:", data); // אמור להיות אובייקט עם id, email, file
 
-    const fullLink = `https://react-node-signature-gqey.onrender.com${data.data.link}`;
-    console.log("✅ הקישור שנשמר:", fullLink);
-    setlinkToShare(fullLink);
+    
+    console.log("✅ הקישור שנשמר:", data.data.link);
+    setlinkToShare(data.data.link);
 
     dispatch(setId(data.data.id));
     dispatch(setEmail(data.data.email));

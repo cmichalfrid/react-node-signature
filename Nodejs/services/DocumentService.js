@@ -49,7 +49,7 @@ class DocumentService extends Service {
                 message: 'המסמך הומר ונשמר בהצלחה',
                 email: savedDoc.email,
                 file: savedDoc.fileData,
-                link: `/signature/${savedDoc.id}`,
+                link: `https://react-node-signature-gqey.onrender.com/signature/${savedDoc.id}`,
                 id: savedDoc.id
             });
 
