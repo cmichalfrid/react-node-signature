@@ -110,11 +110,11 @@ function DocumentFlow() {
                 <p>
                     לינק למסמך לחתימה:{" "}
                     <a
-                        href={`https://react-node-signature-gqey.onrender.com${linkToShare}`}
+                        href={linkToShare}
                         target="_blank"
                         rel="noopener noreferrer"
                     >
-                        {`https://react-node-signature-gqey.onrender.com${linkToShare}`}
+                        {linkToShare}
                     </a>
                 </p>
             )}
