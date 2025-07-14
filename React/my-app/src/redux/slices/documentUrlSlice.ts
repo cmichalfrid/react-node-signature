@@ -12,14 +12,6 @@ export const documentUrlSlice: any = createSlice({
         setId: (state, action: PayloadAction<number>) => {
             state.id = action.payload;
             localStorage.setItem('id', action.payload.toString());
-        },
-        setEmail: (state, action: PayloadAction<string>) => {
-            state.email = action.payload;
-            localStorage.setItem('email', action.payload);
-        },
-        setFile: (state, action: PayloadAction<string>) => {
-            state.file = action.payload;
-            localStorage.setItem('file', action.payload);
         }
     }
 })

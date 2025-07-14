@@ -22,12 +22,10 @@ function DigitlSignature() {
     const [showViewer, setShowViewer] = useState(false);
     useEffect(() => {
     if (idFile) {
-        getDocumentForId(idFile).then(response => {
-            console.log(response);
-            
+        getDocumentForId(idFile).then(response => {            
             const blob = new Blob([response.data], { type: 'application/pdf' });
             const url = URL.createObjectURL(blob);
-            dispatch(setUrlPdf(url)); // <== כאן הכנסנו את הקישור הנכון
+            dispatch(setUrlPdf(url));
             dispatch(setId(idFile));
         });
     }
