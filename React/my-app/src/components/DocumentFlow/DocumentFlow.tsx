@@ -50,8 +50,10 @@ function DocumentFlow() {
                 dispatch(setId(data.data.id));
                 dispatch(setEmail(data.data.email));
                 dispatch(setFile(data.data.file)); 
-                setlinkToShare(`https://react-node-signature-gqey.onrender.com/signature/${data.data.id}`.trim());
-                console.log(linkToShare);
+               const fullLink = `https://react-node-signature-gqey.onrender.com/signature/${data.data.id}`;
+console.log("✅ הקישור שנשמר:", fullLink);
+setlinkToShare(fullLink);
+
                 
             })
             .finally(() => setLoading(false));
