@@ -46,7 +46,7 @@ function DocumentFlow() {
             .then(data => {
 
                 console.log(data.data);
-                dispatch(setUrlPdf(`/api/document/${data.data.id}`.trim()));
+                dispatch(setUrlPdf(`/api/document/${data.data.id}`.trim())); 
                 dispatch(setId(data.data.id));
                 dispatch(setEmail(data.data.email));
                 dispatch(setFile(data.data.file)); // אם מחזיר את הקובץ (Base64)
@@ -106,17 +106,18 @@ function DocumentFlow() {
             <button type="submit">צור לינק לחתימה</button>
 
             {loading && <p>⏳ יוצרים את הלינק...</p>}
-            {linkToShare && (
-                <p>
-                    <a
-                        href={`https://react-node-signature-gqey.onrender.com/${linkToShare}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        {`https://react-node-signature-gqey.onrender.com/${linkToShare}`}
-                    </a>
-                </p>
-            )}
+           {linkToShare && (
+    <p>
+        לינק למסמך לחתימה:{" "}
+        <a
+            href={linkToShare}
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+            {`https://react-node-signature-gqey.onrender.com/${linkToShare}`}
+        </a>
+    </p>
+)}
         </form>
 
     </div>
