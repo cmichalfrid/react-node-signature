@@ -14,7 +14,7 @@ function DocumentFlow() {
     console.log("Rendering DocumentFlow component");
 
     const [fileName, setFileName] = useState<File | undefined>(undefined);
-    const [linkToShare, setlinkToShare] = useState<string>();
+    const [linkToShare, setlinkToShare] = useState<string>('');
     const [loading, setLoading] = useState(false);
     const myStore = useSelector((allStore) => allStore)
     const dispatch = useDispatch();
