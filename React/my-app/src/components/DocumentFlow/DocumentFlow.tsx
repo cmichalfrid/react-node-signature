@@ -51,6 +51,8 @@ function DocumentFlow() {
                 dispatch(setEmail(data.data.email));
                 dispatch(setFile(data.data.file)); 
                 setlinkToShare("https://react-node-signature-gqey.onrender.com/signature/${data.data.id}".trim());
+                console.log(linkToShare);
+                
             })
             .finally(() => setLoading(false));
     };
