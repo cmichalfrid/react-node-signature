@@ -83,7 +83,7 @@ class DocumentService extends Service {
             console.log("📥 Received signature request with body:", req.body);
 
         try {
-            const file = await this.repo.get(req.body.id);
+            const file = await this.repo.get(req.body.idFile);
             if (!file) return res.status(404).send("מסמך לא נמצא");
 
             const { fileData, email, name } = file;
