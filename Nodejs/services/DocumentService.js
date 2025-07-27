@@ -80,6 +80,8 @@ class DocumentService extends Service {
 
 
     async sendFileSignature(req, res, next) {
+            console.log("📥 Received signature request with body:", req.body);
+
         try {
             const file = await this.repo.get(req.body.id);
             if (!file) return res.status(404).send("מסמך לא נמצא");
