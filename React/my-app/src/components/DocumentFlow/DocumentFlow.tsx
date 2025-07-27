@@ -5,7 +5,6 @@ import { DocumentModel } from '../../models/DocumentModel';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { insertDocument } from '../../services/document.service';
-import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 
