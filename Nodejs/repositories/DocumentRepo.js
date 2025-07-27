@@ -3,7 +3,8 @@ const path = require('path');
 
 class DocumentRepo {
     constructor() {
-  this.filePath = '/mnt/data/documents.json';
+  const dataDir = path.join(process.cwd(), 'data');
+this.filePath = path.join(dataDir, 'documents.json');
         const dir = path.dirname(this.filePath);
 
         // אם התיקייה לא קיימת, ליצור אותה
