@@ -2,11 +2,9 @@ const fs = require('fs');
 const path = require('path');
 const libre = require('libreoffice-convert');
 const nodemailer = require('nodemailer');const { PDFDocument, rgb, StandardFonts } = require('pdf-lib');
-
 const Service = require('./Service.js');
 const DocumentRepo = require('../repositories/DocumentRepo.js');
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 class DocumentService extends Service {
     constructor() {
