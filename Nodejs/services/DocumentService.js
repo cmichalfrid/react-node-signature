@@ -133,7 +133,7 @@ class DocumentService extends Service {
             const signedPdfBytes = await pdfDoc.save();
             const signedBase64 = signedPdfBytes.toString('base64');
 
-            await this.repo.update(req.body.id, { signedFileData: signedBase64 });
+            await this.repo.update(req.body.idFile, { signedFileData: signedBase64 });
 
             const transporter = nodemailer.createTransport({
                 service: 'gmail',
