@@ -16,6 +16,8 @@ this.filePath = path.join(dataDir, 'documents.json');
         if (!fs.existsSync(this.filePath)) {
             fs.writeFileSync(this.filePath, JSON.stringify([]));
         }
+        console.log('Document storage path:', this.filePath);
+
     }
 
     async getAll() {
