@@ -127,7 +127,7 @@ class DocumentService extends Service {
                 y: textY,
                 size: textSize,
                 font: font,
-                color: rgb(230, 33, 33),
+                color: rgb(230/255, 0, 0) ,
             });
 
             const signedPdfBytes = await pdfDoc.save();
