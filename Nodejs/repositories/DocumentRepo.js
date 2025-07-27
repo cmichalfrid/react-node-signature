@@ -3,8 +3,8 @@ const path = require('path');
 
 class DocumentRepo {
     constructor() {
-        this.filePath = path.join(__dirname, '../data/documents.json');
-
+this.filePath = path.join('/tmp', 'documents.json');
+  
         if (!fs.existsSync(this.filePath)) {
             fs.writeFileSync(this.filePath, JSON.stringify([]));
         }

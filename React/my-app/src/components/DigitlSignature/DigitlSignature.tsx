@@ -9,15 +9,12 @@ import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 import { getDocumentForId, sendSignature } from '../../services/document.service';
 import { useParams } from 'react-router-dom';
 import { number } from 'yup';
-import { setId, setUrlPdf } from '../../redux/slices/documentUrlSlice';
 
 function DigitlSignature() {
     const { id } = useParams();
     const idFile = Number(id)
+    const [urlPdf, setUrlPdf] = useState<any | null>(null);
     const sigCanvas = useRef<SignatureCanvas>(null!);
-    const documentUrlSlice = useSelector((allStore: any) => allStore.documentUrlSlice);
-    const dispatch = useDispatch();
-
     const defaultLayoutPluginInstance = defaultLayoutPlugin();
     const [showViewer, setShowViewer] = useState(false);
     useEffect(() => {
@@ -25,14 +22,13 @@ function DigitlSignature() {
         getDocumentForId(idFile).then(response => {            
             const blob = new Blob([response.data], { type: 'application/pdf' });
             const url = URL.createObjectURL(blob);
-            dispatch(setUrlPdf(url));
-            dispatch(setId(idFile));
+           setUrlPdf(url)
         });
     }
 }, [id]);
     const saveSignature = () => {
         const data = {
-            id: documentUrlSlice.id,
+            idFile,
             signature: sigCanvas.current?.toDataURL('image/png'),
         };
         const response = sendSignature(data).then(data => alert('המסמך החתום נשלח בהצלחה')
@@ -41,7 +37,7 @@ function DigitlSignature() {
     return <div className='DigitlSignature' dir="rtl" style={{ textAlign: 'center', padding: '2rem' }}>
         <h2>חתימה על המסמך</h2>
 
-        {documentUrlSlice.url ? (
+        {urlPdf? (
             <>
                 {!showViewer ? (
                     <div
@@ -86,7 +82,7 @@ function DigitlSignature() {
                     <div style={{ height: '750px', width: '100%', border: '1px solid #ccc', boxShadow: '0 2px 8px rgba(0,0,0,0.1)', marginBottom: '2rem' }}>
                         <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
                             <Viewer
-                                fileUrl={documentUrlSlice.url}
+                                fileUrl={urlPdf}
                                 plugins={[defaultLayoutPluginInstance]}
                             />
                         </Worker>

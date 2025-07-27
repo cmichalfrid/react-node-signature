@@ -8,9 +8,9 @@ const DocumentService = require('../services/DocumentService.js');
 const upload = multer({ dest: 'uploads/' });
 
 router.post('/', (req, res, next) => {
-  console.log('POST /api/document arrived');
   next();
 }, upload.single('file'), DocumentService.insert);
+
 router.post('/signature', DocumentService.sendFileSignature);
 
 router.get('/', DocumentService.getAll);
@@ -25,8 +25,8 @@ router.get('/:id', async (req, res) => {
       return res.status(404).send('Document not found');
     }
 
-const baseUrl = process.env.BASE_URL || `http://localhost:${process.env.PORT || 3000}`;
-const fileUrl = `${baseUrl}/uploads/pdf/${encodeURIComponent(document.fileName)}`;
+    const baseUrl = process.env.BASE_URL || `http://localhost:${process.env.PORT || 3000}`;
+    const fileUrl = `${baseUrl}/uploads/pdf/${encodeURIComponent(document.fileName)}`;
 
     res.json({
       id: document.id,

@@ -1,9 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const libre = require('libreoffice-convert');
-const nodemailer = require('nodemailer');
-const sgMail = require('@sendgrid/mail');
-const { PDFDocument, rgb, StandardFonts } = require('pdf-lib');
+const nodemailer = require('nodemailer');const { PDFDocument, rgb, StandardFonts } = require('pdf-lib');
 
 const Service = require('./Service.js');
 const DocumentRepo = require('../repositories/DocumentRepo.js');
@@ -43,7 +41,6 @@ class DocumentService extends Service {
             const base64Data = pdfBuffer.toString('base64');
 
             const savedDoc = await this.repo.insert({ name, email, fileData: base64Data });
-            console.log('inserted document id:', savedDoc.id);
 
             res.status(201).json({
                 message: 'המסמך הומר ונשמר בהצלחה',
@@ -62,7 +59,6 @@ class DocumentService extends Service {
     async getDocumentForId(req, res, next) {
         try {
             const file = await this.repo.get(req.params.id);
-            console.log('📄 file loaded from repo:', file);
             if (!file) return res.status(404).send("מסמך לא נמצא");
 
             const pdfBuffer = Buffer.from(file.fileData, 'base64');
@@ -122,7 +118,7 @@ class DocumentService extends Service {
                 y: textY,
                 size: textSize,
                 font: font,
-                color: rgb(0, 0, 0),
+                color: rgb(230, 33, 33),
             });
 
             const signedPdfBytes = await pdfDoc.save();

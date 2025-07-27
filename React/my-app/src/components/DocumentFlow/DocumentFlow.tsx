@@ -6,7 +6,6 @@ import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { insertDocument } from '../../services/document.service';
 import { useDispatch, useSelector } from 'react-redux';
-import { setEmail, setFile, setId, setUrlPdf } from '../../redux/slices/documentUrlSlice';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -15,16 +14,11 @@ function DocumentFlow() {
     const [fileName, setFileName] = useState<File | undefined>(undefined);
     const [linkToShare, setlinkToShare] = useState<string>('');
     const [loading, setLoading] = useState(false);
-    const myStore = useSelector((allStore) => allStore)
-    const dispatch = useDispatch();
-
     const handleChange = (event: any) => {
 
         setFileName(event.target.files[0])
     }
-    const sendToServer = (value: DocumentModel) => {
-
-
+    const sendToServer = (value: any) => {
         if (!fileName) {
             alert('אנא בחר קובץ לפני השליחה');
             return;
@@ -37,8 +31,6 @@ function DocumentFlow() {
         insertDocument(formData)
             .then(data => {
                 setlinkToShare(data.data.link);
-                dispatch(setId(data.data.id));
-                dispatch(setUrlPdf(`/api/document/${data.data.id}`));
             })
             .finally(() => setLoading(false));
     }
