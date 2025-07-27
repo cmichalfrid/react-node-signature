@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const libre = require('libreoffice-convert');
-const nodemailer = require('nodemailer');const { PDFDocument, rgb, StandardFonts } = require('pdf-lib');
+const nodemailer = require('nodemailer'); const { PDFDocument, rgb, StandardFonts } = require('pdf-lib');
 const Service = require('./Service.js');
 const DocumentRepo = require('../repositories/DocumentRepo.js');
 
@@ -54,21 +54,30 @@ class DocumentService extends Service {
         }
     }
 
-    async getDocumentForId(req, res, next) {
-        try {
-            const file = await this.repo.get(req.params.id);
-            if (!file) return res.status(404).send("מסמך לא נמצא");
+   async getDocumentForId(req, res, next) {
+    try {
+        const file = await this.repo.get(req.params.id);
+        if (!file) return res.status(404).send("מסמך לא נמצא");
 
-            const pdfBuffer = Buffer.from(file.fileData, 'base64');
-            res.setHeader('Content-Type', 'application/pdf');
-            res.setHeader('Content-Disposition', `inline; filename="${file.name}.pdf"`);
-            res.send(pdfBuffer);
+        const pdfBuffer = Buffer.from(file.fileData, 'base64');
 
-        } catch (error) {
-            console.error(error);
-            res.status(500).send("שגיאה בשליפת המסמך");
-        }
+        // קידוד שם הקובץ עבור ה-header
+        const encodedFilename = encodeURIComponent(file.name).replace(/['()]/g, escape).replace(/\*/g, '%2A');
+
+        // מגדירים Content-Disposition פעם אחת, עם אפשרות inline או attachment
+        res.setHeader('Content-Disposition', `inline; filename*=UTF-8''${encodedFilename}.pdf`);
+
+        // מגדירים את סוג התוכן כ-PDF
+        res.setHeader('Content-Type', 'application/pdf');
+
+        res.send(pdfBuffer);
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("שגיאה בשליפת המסמך");
     }
+}
+
 
     async sendFileSignature(req, res, next) {
         try {
