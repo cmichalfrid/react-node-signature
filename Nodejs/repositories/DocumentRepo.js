@@ -3,8 +3,15 @@ const path = require('path');
 
 class DocumentRepo {
     constructor() {
-this.filePath = '/mnt/data/documents.json';
-  
+  this.filePath = '/mnt/data/documents.json';
+        const dir = path.dirname(this.filePath);
+
+        // אם התיקייה לא קיימת, ליצור אותה
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir, { recursive: true });
+        }
+
+        // אם הקובץ לא קיים, ליצור אותו עם מערך ריק
         if (!fs.existsSync(this.filePath)) {
             fs.writeFileSync(this.filePath, JSON.stringify([]));
         }
